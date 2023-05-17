@@ -1,0 +1,49 @@
+#NAME
+name: Push images to ECR and deploy on ELastic Beanstalk
+#EVENT
+on:
+ push:
+  branches:
+   - main
+   
+#JOBS
+jobs:
+ build_and_push_docker_images:
+  name: build docker images
+  runs-on: ubuntu-latest
+  steps:
+   - name: Checkout files
+     uses: actions/checkout@v2
+     
+   - name: Configure AWS credentials
+     uses: aws-actions/configure-aws-credentials@v2
+     with:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-region: ${{ secrets.AWS_REGION }}
+
+   - name: Login to AWS ECR
+     id: login-ecr
+     uses: aws-actions/amazon-ecr-login@v1
+    
+   - name: Build, tag and push backend image
+     run: |
+      aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+      docker build -t song-site-backend .
+      docker tag song-site-backend:latest 777930584266.dkr.ecr.us-west-2.amazonaws.com/song-site-backend:latest
+      docker push 777930584266.dkr.ecr.us-west-2.amazonaws.com/song-site-backend:latest
+   
+     
+   - name: Install EB CLI
+     run: |
+      pip install awsebcli --upgrade --user
+        
+   - name: Deploy Backend to Elastic Beanstalk
+     run: |
+        aws configure set default.region ${{ secrets.AWS_REGION }}
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+        docker pull ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/song-site-backend:latest
+        eb init -r ${{ secrets.AWS_REGION }} -p docker song-site-backend-application
+        eb deploy song-site-backend-environment
+
+
