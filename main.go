@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os"
 	"time"
 
 	"github.com/BuilderSong/gin-json-crud/controllers"
@@ -20,7 +19,7 @@ func main() {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{os.Getenv("DOMAIN")},
+		AllowOrigins:     []string{"http://songsite.net", "https://songsite.net", "http://www.songsite.net", "https://www.songsite.net"},
 		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
 		AllowCredentials: true,
