@@ -44,7 +44,7 @@ jobs:
         aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
         docker pull ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/song-site-backend:latest
         eb init -r ${{ secrets.AWS_REGION }} -p docker song-site-backend-application
-        eb setenv DB_URL=${{ secrets.DB_URL }}
+        eb setenv DB_URL=${{ secrets.DB_URL }} SECRET=${{ secrets.SECRET }} EMAIL=${{ secrets.EMAIL }} EMAIL_PD=${{ secrets.EMAIL_PD }}
         eb deploy song-site-backend-environment
 
 

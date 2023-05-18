@@ -18,6 +18,8 @@ func init() {
 func main() {
 	r := gin.Default()
 
+	port := ":8080"
+
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://songsite.net", "https://songsite.net", "http://www.songsite.net", "https://www.songsite.net"},
 		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
@@ -38,5 +40,5 @@ func main() {
 	r.POST("/sendEmails", middleware.AuthRequired, controllers.SendEmails)
 	r.POST("/subscribe", controllers.Subscribe)
 	r.PATCH("/subscribe", controllers.UnSubscribe)
-	r.Run()
+	r.Run(port)
 }
