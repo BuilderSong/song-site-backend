@@ -45,6 +45,7 @@ jobs:
         docker pull ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/song-site-backend:latest
         eb init -r ${{ secrets.AWS_REGION }} -p docker song-site-backend-application
         eb setenv DB_URL=${{ secrets.DB_URL }} SECRET=${{ secrets.SECRET }} EMAIL=${{ secrets.EMAIL }} EMAIL_PD=${{ secrets.EMAIL_PD }}
+        eb config song-site-backend-application --namespace aws:elbv2:listener:443:DefaultProcess --value https
         eb deploy song-site-backend-environment
 
 
