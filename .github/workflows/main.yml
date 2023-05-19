@@ -45,10 +45,6 @@ jobs:
         docker pull ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/song-site-backend:latest
         eb init -r ${{ secrets.AWS_REGION }} -p docker song-site-backend-application
         eb setenv DB_URL=${{ secrets.DB_URL }} SECRET=${{ secrets.SECRET }} EMAIL=${{ secrets.EMAIL }} EMAIL_PD=${{ secrets.EMAIL_PD }}
-        eb config save
-        sed -i 's/ListenerProtocol: HTTP/ListenerProtocol: HTTPS/g' .elasticbeanstalk/saved_configs/song-site-backend-environment.cfg.yml
-        sed -i "s/SSLCertificateArns:.*/SSLCertificateArns: ${{ secrets.SSL_ARN}}/g" .elasticbeanstalk/saved_configs/song-site-backend-environment.cfg.yml
-        eb config put song-site-backend-environment
         eb deploy song-site-backend-environment
 
 
