@@ -97,8 +97,8 @@ func SendEmails(c *gin.Context) {
 
 	m := gomail.NewMessage()
 
-	blog_url := os.Getenv("DOMAIN") + "/blog/" + strconv.Itoa(body.ID)
-	unsubscribe_url := os.Getenv("DOMAIN") + "/unsubscribe"
+	blog_url := "https://www.songsite.net" + "/blog/" + strconv.Itoa(body.ID)
+	unsubscribe_url := "https://www.songsite.net" + "/unsubscribe"
 
 	for _, r := range subscribers {
 		m.SetHeader("From", os.Getenv("EMAIL"))
