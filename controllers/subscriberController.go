@@ -104,7 +104,7 @@ func SendEmails(c *gin.Context) {
 		m.SetHeader("From", os.Getenv("EMAIL"))
 		m.SetAddressHeader("To", r.Email, r.Name)
 		m.SetHeader("Subject", fmt.Sprintf("%s from Song's Site", body.Title))
-		htmlBody := fmt.Sprintf("<html><body>Hello %s!<br><br>How are you doing recently? Below is another blog from <a href=%s>Song's Site.</a><br><br>Title: %s<br><br>Abstract: %s<br><br><a href=%s >Click here to read more</a><br><br><a href=%s>Click here to unsubsctibe</a><br><br><br>Regards,<br><a href=%s>Song's Site</a></body></html>", r.Name, os.Getenv("DOMAIN"), body.Title, body.Abstract, blog_url, unsubscribe_url, os.Getenv("DOMAIN"))
+		htmlBody := fmt.Sprintf("<html><body>Hello %s!<br><br>How are you doing recently? Below is another blog from <a href=%s>Song's Site.</a><br><br>Title: %s<br><br>Abstract: %s<br><br><a href=%s >Click here to read more</a><br><br><a href=%s>Click here to unsubscribe</a><br><br><br>Regards,<br><a href=%s>Song's Site</a></body></html>", r.Name, os.Getenv("DOMAIN"), body.Title, body.Abstract, blog_url, unsubscribe_url, os.Getenv("DOMAIN"))
 		m.SetBody("text/html", htmlBody)
 
 		if err := gomail.Send(s, m); err != nil {
