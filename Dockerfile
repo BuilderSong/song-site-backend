@@ -10,6 +10,8 @@ COPY . /app
 # Install any needed dependencies
 RUN go mod download
 
+RUN ls -al
+
 # Build the Go app
 RUN go build -o main .
 
